@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://blog.paisen.site">Blog</a>
+                    <a href="/blog">Blog</a>
                     <a href="/about">AboutMe</a>
                     <a href="https://github.com/junxxx">GitHub</a>
                 </div>

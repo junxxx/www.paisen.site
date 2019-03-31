@@ -14,25 +14,24 @@
                 <form>
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
-                            <label for="validationServer01">Title</label>
-                            <input type="text" class="form-control is-valid" id="validationServer01" placeholder="Title"
+                            <label >Title</label>
+                            <input type="text" class="form-control" v-bind:class="{'is-valid': title_is_valid, 'is-invalid': title_is_invalid}"  placeholder="Title"
                                    v-model="title" value="" name="title" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
                             <div class="invalid-feedback">
-                                Please choose a username.
+                                Please input a title.
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
-                            <label for="validationTextarea">Content</label>
-                            <textarea class="form-control is-invalid" id="validationTextarea"
-                                      placeholder="Required example content" name="content" required
+                            <label >Content</label>
+                            <textarea class="form-control"  v-bind:class="{'is-valid': content_is_valid, 'is-invalid': content_is_invalid}" placeholder="Required example content" name="content" required
                                       v-model="content"></textarea>
                             <div class="invalid-feedback">
-                                Please enter a message in the textarea.
+                                Please enter content in the textarea.
                             </div>
                         </div>
                     </div>
@@ -48,32 +47,50 @@
         data() {
             return {
                 title: '',
-                content: ''
+                title_is_valid: false,
+                title_is_invalid: false,
+                content: '',
+                content_is_valid: false,
+                content_is_invalid: false,
             }
         },
         methods: {
             check() {
                 if (this.title == '') {
+                    this.title_is_invalid = true;
                     return false
+                }else {
+                    this.title_is_invalid = false;
+                    this.title_is_valid = true;
                 }
                 if (this.content == '') {
+                    this.content_is_invalid = true;
                     return false
+                }else {
+                    this.content_is_invalid = false;
+                    this.content_is_valid = true;
                 }
                 return true
             },
             create() {
                 let checked = this.check();
-                axios({
-                    method: 'post',
-                    url: '/admin/article',
-                    data: {
-                        title: this.title,
-                        content: this.content
-                    }
-                });
+                if (checked) {
+                    axios({
+                        method: 'post',
+                        url: '/admin/article',
+                        data: {
+                            title: this.title,
+                            content: this.content
+                        }
+                    });
+                }
 
                 console.log(checked)
             }
+        },
+        updated() {
+            console.log('updated')
+            console.log(this)
         },
         mounted() {
             console.log('create mounted.')

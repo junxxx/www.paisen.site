@@ -1807,38 +1807,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       title: '',
-      content: ''
+      title_is_valid: false,
+      title_is_invalid: false,
+      content: '',
+      content_is_valid: false,
+      content_is_invalid: false
     };
   },
   methods: {
     check: function check() {
       if (this.title == '') {
+        this.title_is_invalid = true;
         return false;
+      } else {
+        this.title_is_invalid = false;
+        this.title_is_valid = true;
       }
 
       if (this.content == '') {
+        this.content_is_invalid = true;
         return false;
+      } else {
+        this.content_is_invalid = false;
+        this.content_is_valid = true;
       }
 
       return true;
     },
     create: function create() {
       var checked = this.check();
-      axios({
-        method: 'post',
-        url: '/admin/article',
-        data: {
-          title: this.title,
-          content: this.content
-        }
-      });
+
+      if (checked) {
+        axios({
+          method: 'post',
+          url: '/admin/article',
+          data: {
+            title: this.title,
+            content: this.content
+          }
+        });
+      }
+
       console.log(checked);
     }
+  },
+  updated: function updated() {
+    console.log('updated');
+    console.log(this);
   },
   mounted: function mounted() {
     console.log('create mounted.');
@@ -36939,9 +36958,7 @@ var render = function() {
         _c("form", [
           _c("div", { staticClass: "form-row" }, [
             _c("div", { staticClass: "col-md-4 mb-3" }, [
-              _c("label", { attrs: { for: "validationServer01" } }, [
-                _vm._v("Title")
-              ]),
+              _c("label", [_vm._v("Title")]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -36952,10 +36969,13 @@ var render = function() {
                     expression: "title"
                   }
                 ],
-                staticClass: "form-control is-valid",
+                staticClass: "form-control",
+                class: {
+                  "is-valid": _vm.title_is_valid,
+                  "is-invalid": _vm.title_is_invalid
+                },
                 attrs: {
                   type: "text",
-                  id: "validationServer01",
                   placeholder: "Title",
                   value: "",
                   name: "title",
@@ -36980,7 +37000,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "invalid-feedback" }, [
                 _vm._v(
-                  "\n                            Please choose a username.\n                        "
+                  "\n                            Please input a title.\n                        "
                 )
               ])
             ])
@@ -36988,9 +37008,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "form-row" }, [
             _c("div", { staticClass: "col-md-6 mb-3" }, [
-              _c("label", { attrs: { for: "validationTextarea" } }, [
-                _vm._v("Content")
-              ]),
+              _c("label", [_vm._v("Content")]),
               _vm._v(" "),
               _c("textarea", {
                 directives: [
@@ -37001,9 +37019,12 @@ var render = function() {
                     expression: "content"
                   }
                 ],
-                staticClass: "form-control is-invalid",
+                staticClass: "form-control",
+                class: {
+                  "is-valid": _vm.content_is_valid,
+                  "is-invalid": _vm.content_is_invalid
+                },
                 attrs: {
-                  id: "validationTextarea",
                   placeholder: "Required example content",
                   name: "content",
                   required: ""
@@ -37021,7 +37042,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "invalid-feedback" }, [
                 _vm._v(
-                  "\n                            Please enter a message in the textarea.\n                        "
+                  "\n                            Please enter content in the textarea.\n                        "
                 )
               ])
             ])
