@@ -29,8 +29,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::resource('/article', 'Admin\ArticleController');
 });
 
-
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/blog', 'BlogController@index');
