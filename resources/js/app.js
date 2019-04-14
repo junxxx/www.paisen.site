@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 
+window.showdown = require('showdown');
 window.Vue = require('vue');
 
 /**
@@ -18,7 +19,6 @@ window.Vue = require('vue');
  */
 
 const files = require.context('./', true, /\.vue$/i);
-console.log(files);
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);

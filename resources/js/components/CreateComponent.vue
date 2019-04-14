@@ -1,15 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-md-2">
-                <nav class="nav flex-column">
-                    <a class="nav-link active" href="/admin/article">Article</a>
-                    <a class="nav-link" href="#">Link</a>
-                    <a class="nav-link" href="#">Link</a>
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </nav>
-            </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <a class="btn btn-primary" href="/admin/article/create" role="button">New</a>
                 <form>
                     <div class="form-row">
@@ -29,7 +21,7 @@
                         <div class="col-md-6 mb-3">
                             <label >Content</label>
                             <textarea class="form-control"  v-bind:class="{'is-valid': content_is_valid, 'is-invalid': content_is_invalid}" placeholder="Required example content" name="content" required
-                                      v-model="content"></textarea>
+                                      v-model="content" style="height:600px; width:480px;"></textarea>
                             <div class="invalid-feedback">
                                 Please enter content in the textarea.
                             </div>
@@ -37,6 +29,8 @@
                     </div>
                 </form>
                 <button class="btn btn-primary" @click="create()">Submit</button>
+            </div>
+            <div id="preview" class="col-md-4" style="height: 97%; max-height: 97%; border: 1px solid #eee; overflow-y: scroll; width: 55%; padding: 10px;">
             </div>
         </div>
     </div>
@@ -80,7 +74,7 @@
                         url: '/admin/article',
                         data: {
                             title: this.title,
-                            content: this.content
+                            content: $('#preview').html()
                         }
                     });
                 }
@@ -89,8 +83,9 @@
             }
         },
         updated() {
-            console.log('updated')
-            console.log(this)
+            var converter = new showdown.Converter(),
+                html = converter.makeHtml(this.content);
+            $("#preview").html(html);
         },
         mounted() {
             console.log('create mounted.')
