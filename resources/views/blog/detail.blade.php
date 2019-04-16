@@ -1,6 +1,4 @@
 @extends('layouts.app')
-<style>
-</style>
 
 @section('content')
     <div class="container-fluid">
@@ -9,8 +7,13 @@
             <div class="col-8">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{$article->title}}</h5>
-                        <p class="card-text">{!! $article->content !!}</p>
+                        <h1 class="card-title page-header" style="margin: 0.4em 0 0.2em 0;
+    padding: 0 0 0.2em 0;
+    color: #000000;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    border-bottom: 1px solid #d3d3d3;">{{$article->title}}</h1>
+                        <p id='content' class="card-text">{!! $article->content !!}</p>
                         <p class="card-text">
                             <small class="text-muted">{{$article->updated_at}}</small>
                         </p>
@@ -21,6 +24,4 @@
             <div class="col"></div>
         </div>
     </div>
-    <script type="text/javascript">
-    </script>
 @endsection

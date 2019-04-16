@@ -14,7 +14,7 @@ class ArticleController extends AdminController
      */
     public function index()
     {
-        $list = Article::all();
+        $list = Article::all()->sortByDesc(Article::UPDATED_AT);
         $data = ['list' => $list];
         return view('admin.article.index', ['data' => $data]);
     }
@@ -43,7 +43,8 @@ class ArticleController extends AdminController
         $article->title = $request->title;
         $article->content = $request->content;
         $status = $article->save() ? 200 : 500;
-        return response()->json(['status' => $status]);
+        $msg = $status == 200 ? 'Success' : 'failed';
+        return response()->json(['status' => $status, 'msg' => $msg]);
     }
 
     /**
@@ -54,7 +55,11 @@ class ArticleController extends AdminController
      */
     public function show(Article $article)
     {
-        return view('admin.article.detail', ['article' => $article]);
+        $data = [
+            'title'   => $article->title,
+            'content' => $article->content,
+        ];
+        return resAjax(200, '', $data);
     }
 
     /**
@@ -65,7 +70,7 @@ class ArticleController extends AdminController
      */
     public function edit(Article $article)
     {
-        return view('admin.article.edit', ['article' => $article]);
+        return view('admin.article.edit', ['id' => $article->id]);
     }
 
     /**
@@ -79,8 +84,9 @@ class ArticleController extends AdminController
     {
         $article->title = $request->title;
         $article->content = $request->content;
-        $article->save();
-        //
+        $status = $article->save() ? 200 : 500;
+        $msg = $status == 200 ? 'Success' : 'failed';
+        return resAjax($status, $msg);
     }
 
     /**

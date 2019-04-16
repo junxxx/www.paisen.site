@@ -8,6 +8,7 @@
 require('./bootstrap');
 
 window.showdown = require('showdown');
+window.swal = require('sweetalert');
 window.Vue = require('vue');
 
 /**

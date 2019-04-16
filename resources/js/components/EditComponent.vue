@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </form>
-                <button class="btn btn-primary" @click="create()">Submit</button>
+                <button class="btn btn-primary" @click="save()">Update</button>
             </div>
             <div id="preview" class="col "
                  style="height: 97%; max-height: 97%; border: 1px solid #eee; overflow-y: scroll;  padding: 10px;">
@@ -43,17 +43,32 @@
 </template>
 <script>
     export default {
+        props: [ 'id'],
         data() {
             return {
-                title: '',
+                title: null,
                 title_is_valid: false,
                 title_is_invalid: false,
-                content: '',
+                content:null,
                 content_is_valid: false,
                 content_is_invalid: false,
             }
         },
         methods: {
+            load() {
+                let me = this;
+                axios({
+                    method: 'get',
+                    url: '/admin/article/' + this.id
+                }).then(function (response) {
+                    let status = response.data.status ;
+                    let data = response.data.data ;
+                    if (status== 200) {
+                        me.title = data.title;
+                        me.content = data.content;
+                    }
+                })
+            },
             check() {
                 if (this.title == '') {
                     this.title_is_invalid = true;
@@ -71,15 +86,16 @@
                 }
                 return true
             },
-            create() {
+            save() {
                 let checked = this.check();
+                let me = this;
                 if (checked) {
                     axios({
-                        method: 'post',
-                        url: '/admin/article',
+                        method: 'put',
+                        url: '/admin/article/' + me.id,
                         data: {
-                            title: this.title,
-                            content: this.content
+                            title: me.title,
+                            content: me.content,
                         }
                     }).then(function (response) {
                         swal(response.data.msg, {
@@ -99,6 +115,7 @@
             $("#preview").html(html);
         },
         mounted() {
+            this.load();
             console.log('create mounted.')
         }
     }

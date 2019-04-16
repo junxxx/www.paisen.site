@@ -23,6 +23,7 @@ class BlogController extends Controller
 
     public function detail(Article $article)
     {
+        $article['content'] = (new \Parsedown())->text($article['content']);
         return view('blog.detail', ['article' => $article]);
     }
 }

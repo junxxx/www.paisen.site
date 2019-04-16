@@ -11,7 +11,6 @@
             <div class="card">
                 <div class="card-body" onclick="detail({{$article->id}})">
                     <h5 class="card-title">{{$article->title}}</h5>
-                    <p class="card-text">{!! $article->content !!}</p>
                     <p class="card-text">
                         <small class="text-muted">{{$article->updated_at}}</small>
                     </p>
